@@ -11,3 +11,46 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.img-container {
+  position: relative; /* Enables absolute positioning of child elements */
+  display: inline-block; /* Ensures image is inline with other content */
+  transition: transform 0.3s ease; /* Smooth transition */
+  border: 4px solid #000; /* Black border */
+  border-radius: 15px; /* Curved corners */
+  overflow: hidden; /* Ensures image stays within the curved borders */
+  cursor: pointer;
+}
+
+.img-container img {
+  width: 100%; /* Makes the image take up the full container */
+  height: auto;
+  transition: transform 0.3s ease, opacity 0.3s ease; /* Smooth transition */
+  border-radius: 15px; /* Matching border radius */
+  z-index: 1;
+}
+
+.img-container:hover img {
+  opacity: 0.6;
+  transform: scale(1.1); /* Scale the image on hover */
+}
+
+.img-title {
+  position: absolute; /* Absolute position relative to the container */
+  top: 40%; /* Position the title slightly from the top */
+  left: 50%; /* Center the title horizontally */
+  transform: translateX(-50%); /* Fine-tunes centering by moving left 50% of its own width */
+  font-size: 1.25rem; /* Title font size */
+  color: black; /* White text color (or change to match your design) */
+  font-weight: bold; /* Optional: Make the text bold */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Optional: Add shadow for better visibility */
+  z-index: 2;
+}
+
+.img-title:hover {
+  text-decoration: underline dashed;
+}
+
+.nav-bar-button {
+  color:black;
+}
