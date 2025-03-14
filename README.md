@@ -1,2 +1,2 @@
 # Linear Systems and Signals
-[Website](psurge1.github.io/linear-systems-and-signals)
+[Website](https://psurge1.github.io/linear-systems-and-signals)
