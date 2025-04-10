@@ -14,6 +14,8 @@ import MenuItem from "@mui/material/MenuItem"
 import FormControl from "@mui/material/FormControl"
 import LinearProgress from "@mui/material/LinearProgress"
 
+import ChartPlotter from "./ChartPlotter";
+
 Chart.register(...registerables, zoomPlugin);
 
 
@@ -25,19 +27,6 @@ export function ConvolutionChart() {
   const [hInput, setHInput] = useState("tri(t)");
   const [chartData, setChartData] = useState(null);
   const chartRef = useRef(null);
-  // const isFirstRender = useRef(true);
-
-  // useEffect(() => {
-  //   if (isFirstRender.current) {
-  //     isFirstRender.current = false;
-  //     return;
-  //   }
-    
-  //   console.log("fInput: ", fInput);
-  //   console.log("hInput: ", hInput);
-  //   updateChart();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [fInput, hInput]);
 
   function updateChart() {
     setLoading(true);
@@ -90,7 +79,17 @@ export function ConvolutionChart() {
     <Box>
       <Box style={{display: "flex"}}>
         <Box style={{ width: "60%", marginLeft: "5%", borderWidth: "1rem", border: "2px solid lightgrey", borderRadius: "1%" }}>
-          {chartData && (
+          {(chartData && chartData.labels && chartData.datasets) && (
+            <ChartPlotter
+              xValues={chartData.labels || []}
+              datasets={chartData.datasets || []}
+              title="Convolution"
+              xLabel="t"
+              yLabel="Amplitude"
+              chartRef={chartRef}
+            ></ChartPlotter>
+          )}
+          {/* {chartData && (
             <Line
               ref={chartRef}
               data={chartData}
@@ -119,18 +118,14 @@ export function ConvolutionChart() {
                 },
               }}
             />
-          )}
+          )} */}
+        
         </Box>
         
         <Box style={{marginLeft: "4%"}}>
           <Box style={{ marginTop: "1.5rem" }}>
             <Box>
               <TextField size="small" id="ftInput" label="f(t)" variant="standard" value={fInput} onChange={(e) => setFInput(e.target.value)}/>
-              {/* <input
-                type="text"
-                value={fInput}
-                onChange={(e) => setFInput(e.target.value)}
-              /> */}
               <FormControl size="small">
                 <Select
                   labelId="select-ft-label"

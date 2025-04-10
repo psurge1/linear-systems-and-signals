@@ -75,11 +75,11 @@ export default function DiscreteConvolutionPage() {
 
             {showSolution && (
                 <Box>
-                    <h3>Convolution Table</h3>
-                    <DisplayMatrix table={matrix} rowHeaders={hSeqNumbers} colHeaders={xSeqNumbers} />
-
                     <h3>Convolution Result</h3>
                     <p>{convolutionSolution.join(", ")}</p>
+                    
+                    <h3>Convolution Table</h3>
+                    <DisplayMatrix table={matrix} rowHeaders={hSeqNumbers} colHeaders={xSeqNumbers} />
                 </Box>
             )}
         </Box>
