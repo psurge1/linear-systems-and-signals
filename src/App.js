@@ -46,7 +46,7 @@ function App() {
           padding: '10px 0',
         }}
       >
-        <div style={{display: "flex"}}>
+        <Box style={{display: "flex"}}>
           <Typography variant="body2">Contact Us: example@example.com</Typography>
           <Typography variant="body2">Follow us on:</Typography>
           <Link href="https://www.facebook.com" target="_blank" sx={{ color: 'white', marginRight: 2 }}>
@@ -58,7 +58,7 @@ function App() {
           <Link href="https://www.linkedin.com" target="_blank" sx={{ color: 'white' }}>
             LinkedIn
           </Link>
-        </div>
+        </Box>
       </Box>
     );
   }
@@ -72,13 +72,13 @@ function App() {
   }
 
   return (
-    <div>
+    <Box>
       <NavBar pages={pgs}></NavBar>
-      <div style={{ padding: "20px" }}>
+      <Box style={{ padding: "20px" }}>
         {renderPage()}
-      </div>
-      <BottomPanel></BottomPanel>
-    </div>
+      </Box>
+      {/* <BottomPanel></BottomPanel> */}
+    </Box>
   );
 }
 

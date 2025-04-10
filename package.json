@@ -1,6 +1,7 @@
 {
   "name": "linear-systems-and-signals",
   "version": "0.1.0",
+  "homepage": "https://psurge1.github.io/linear-systems-and-signals",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -12,6 +13,7 @@
     "@testing-library/user-event": "^13.5.0",
     "chart.js": "^4.4.8",
     "chartjs-plugin-zoom": "^2.2.0",
+    "mathjs": "^14.4.0",
     "react": "^19.0.0",
     "react-chartjs-2": "^5.3.0",
     "react-dom": "^19.0.0",
@@ -19,6 +21,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -41,5 +45,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "gh-pages": "^6.3.0"
   }
 }

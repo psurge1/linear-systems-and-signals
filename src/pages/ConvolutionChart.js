@@ -2,32 +2,21 @@ import { useEffect, useState, useRef } from "react";
 import { Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 import zoomPlugin from "chartjs-plugin-zoom";
-import { CSF, ContinuousConvolver } from "../calculations/convolution";
+import { ContinuousConvolver } from "../calculations/convolution";
+import { CSF } from "../calculations/singularity";
+import { evalExpression, functionChoices } from "../calculations/parser";
 
 import Button from "@mui/material/Button"
+import Box from "@mui/material/Box"
 import TextField from "@mui/material/TextField"
 import Select from "@mui/material/Select"
 import MenuItem from "@mui/material/MenuItem"
 import FormControl from "@mui/material/FormControl"
-import CircularProgress from "@mui/material/CircularProgress"
 import LinearProgress from "@mui/material/LinearProgress"
 
 Chart.register(...registerables, zoomPlugin);
 
-const functionChoices = [
-  "t",
-  "pow(t, 2)",
-  "sin(t)",
-  "cos(t)",
-  "exp(t)",
-  // "imp(t)",
-  "us(t)",
-  "sign(t)",
-  "rect(t)",
-  "ramp(t)",
-  "tri(t)",
-  "saw(t)",
-];
+
 
 export function ConvolutionChart() {
   const [loading, setLoading] = useState(false);
@@ -36,33 +25,19 @@ export function ConvolutionChart() {
   const [hInput, setHInput] = useState("tri(t)");
   const [chartData, setChartData] = useState(null);
   const chartRef = useRef(null);
+  // const isFirstRender = useRef(true);
 
-  useEffect(() => {
-    updateChart();
-  }, []);
-
-  const evalExpression = (exp) => {
-    const functionMapping = {
-      sin: Math.sin,
-      cos: Math.cos,
-      exp: Math.exp,
-      pow: Math.pow,
-      // imp: CSF.impulse,
-      us: CSF.unitStep,
-      sign: CSF.signum,
-      rect: CSF.rect,
-      ramp: CSF.ramp,
-      tri: CSF.triangle,
-      saw: CSF.sawtooth,
-    };
-
-    try {
-      let func = new Function("t", ...Object.keys(functionMapping), `return ${exp}`);
-      return (t) => func(t, ...Object.values(functionMapping));
-    } catch (e) {
-      console.error("Error creating function:", e);
-    }
-  };
+  // useEffect(() => {
+  //   if (isFirstRender.current) {
+  //     isFirstRender.current = false;
+  //     return;
+  //   }
+    
+  //   console.log("fInput: ", fInput);
+  //   console.log("hInput: ", hInput);
+  //   updateChart();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [fInput, hInput]);
 
   function updateChart() {
     setLoading(true);
@@ -112,9 +87,9 @@ export function ConvolutionChart() {
   }
 
   return (
-    <div>
-      <div style={{display: "flex"}}>
-        <div style={{ width: "60%", marginLeft: "5%", borderWidth: "1rem", border: "2px solid lightgrey", borderRadius: "1%" }}>
+    <Box>
+      <Box style={{display: "flex"}}>
+        <Box style={{ width: "60%", marginLeft: "5%", borderWidth: "1rem", border: "2px solid lightgrey", borderRadius: "1%" }}>
           {chartData && (
             <Line
               ref={chartRef}
@@ -145,11 +120,11 @@ export function ConvolutionChart() {
               }}
             />
           )}
-        </div>
+        </Box>
         
-        <div style={{marginLeft: "4%"}}>
-          <div style={{ marginTop: "1.5rem" }}>
-            <div>
+        <Box style={{marginLeft: "4%"}}>
+          <Box style={{ marginTop: "1.5rem" }}>
+            <Box>
               <TextField size="small" id="ftInput" label="f(t)" variant="standard" value={fInput} onChange={(e) => setFInput(e.target.value)}/>
               {/* <input
                 type="text"
@@ -172,9 +147,9 @@ export function ConvolutionChart() {
                   ))}
                 </Select>
               </FormControl>
-            </div>
+            </Box>
 
-            <div style={{ marginTop: "1.5rem" }}>
+            <Box style={{ marginTop: "1.5rem" }}>
               <TextField size="small" id="htInput" label="h(t)" variant="standard" value={hInput} onChange={(e) => setHInput(e.target.value)}/>
               <FormControl size="small">
                 <Select
@@ -192,7 +167,7 @@ export function ConvolutionChart() {
                   ))}
                 </Select>
               </FormControl>
-            </div>
+            </Box>
             <Button variant="outlined" onClick={updateChart} style={{ marginTop: "1rem", width: "100%" }}>
               {loading ? "Computing..." : "Compute Convolution"}
             </Button>
@@ -201,9 +176,9 @@ export function ConvolutionChart() {
             <Button variant="outlined" onClick={resetGrid} style={{ marginTop: "1rem", width: "100%" }}>
               Reset Grid
             </Button>
-          </div>
-        </div>
-      </div>
-    </div>
+          </Box>
+        </Box>
+      </Box>
+    </Box>
   );
 };

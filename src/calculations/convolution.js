@@ -1,75 +1,5 @@
-class ComputationalIntegration {
-    static trapezoid(func, lowerBound, upperBound, numDivisions) {
-        var h = (upperBound - lowerBound) / numDivisions;
-        var result = (func(lowerBound) + func(upperBound)) / 2;
-        for (let i = 1; i < numDivisions; ++i) {
-            result += func(lowerBound + i * h);
-        }
-        result *= h;
-        return result;
-    }
-
-    static midpoint(func, lowerBound, upperBound, numDivisions) {
-        var h = (upperBound - lowerBound) / numDivisions;
-        var result = 0;
-        for (let i = 0; i < numDivisions; ++i) {
-            result += func(lowerBound + h/2 + i*h);
-        }
-        result *= h;
-        return result;
-    }
-}
-
-// Continuous Singularity Functions
-export class CSF {
-    static impulse(t) {
-        return CSF.rect(10*t);
-    }
-
-    static unitStep(t) {
-        if (t < 0)
-            return 0;
-        else if (t > 0)
-            return 1;
-        return 0.5;
-    }
-    
-    static rect(t) {
-        if (Math.abs(t) < 0.5)
-            return 1;
-        else if (Math.abs(t) > 0.5)
-            return 0;
-        return 0.5;
-    }
-    
-    static ramp(t) {
-        if (t >= 0)
-            return t;
-        return 0;
-    }
-
-    static triangle(t) {
-        if (-1 <= t && t <= 0)
-            return t + 1;
-        else if (0 < t && t <= 1)
-            return -t + 1;
-        return 0;
-    }
-
-    static signum(t) {
-        if (t < 0)
-            return -1;
-        else if (t > 0)
-            return 1;
-        return 0;
-    }
-
-    static sawtooth(t) {
-        if (0 <= t && t <= 1)
-            return t;
-        return 0;
-    }
-}
+import { ComputationalIntegration } from './calculus.js'
+import { CSF } from './singularity.js'
 
 const Defaults = Object.freeze({
     ACCURACY: Math.pow(10, 4),
@@ -144,3 +74,83 @@ export function generateConvolutionData(f, h) {
 
 // prettyPrint(points)
 // console.log(points)
+
+export class DiscreteConvolver {
+    constructor(f = [], h = [], prefix = false) {
+        this.f = f; // array of numbers
+        this.h = h; // array of numbers
+        this.prefix = prefix;
+    }
+
+    discreteConvolution() {
+        if (this.f.length < this.h.length) {
+            if (this.prefix) {
+                let temp = [];
+                for (let i = 0; i < this.h.length - this.f.length; ++i) {
+                    temp.push(0);
+                }
+                for (let i = 0; i < this.f.length; ++i) {
+                    temp.push(this.f[i]);
+                }
+                this.f = temp;
+            }
+            else {
+                for (let i = this.f.length; i < this.h.length; ++i) {
+                    this.f.push(0);
+                }
+            }
+        }
+        else if (this.f.length > this.h.length) {
+            if (this.prefix) {
+                let temp = [];
+                for (let i = 0; i < this.f.length - this.h.length; ++i) {
+                    temp.push(0);
+                }
+                for (let i = 0; i < this.h.length; ++i) {
+                    temp.push(this.h[i]);
+                }
+                this.h = temp;
+            }
+            else {
+                for (let i = this.h.length; i < this.f.length; ++i) {
+                    this.h.push(0);
+                }
+            }
+        }
+        let table = this.constructTable();
+
+        let convolutionSolution = [];
+        
+        for (let i = 0; i < table.length; ++i) {
+            let curSum = 0;
+            for (let x = 0, y = i; x < table[i].length && y >= 0; ++x, --y) {
+                curSum += table[y][x];
+            }
+            convolutionSolution.push(curSum);
+        }
+
+        if (table.length > 0) {
+            let lastRow = table.length - 1;
+            for (let i = 1; i < table[lastRow].length; ++i) {
+                let curSum = 0.
+                for (let x = i, y = lastRow; x < table[lastRow].length && y >= 0; ++x, --y) {
+                    curSum += table[y][x];
+                }
+                convolutionSolution.push(curSum);
+            }
+        }
+        return {convolutionSolution, table};
+    }
+
+    constructTable() {
+        let table = [];
+        for (let row = 0; row < this.h.length; ++row) {
+            let temp = [];
+            for (let col = 0; col < this.f.length; ++col) {
+                temp.push(this.h[row] * this.f[col]);
+            }
+            table.push(temp);
+        }
+        return table;
+    }
+}
