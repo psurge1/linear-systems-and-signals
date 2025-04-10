@@ -2,7 +2,7 @@ import {useState, useEffect, useRef} from "react";
 
 import { Box, Button, ButtonGroup, TextField, FormControl, MenuItem, Select } from "@mui/material";
 import { functionChoices } from "../calculations/parser";
-import ChartPlotter from "./ChartPlotter";
+import ChartPlotter from "../components/ChartPlotter";
 
 export default function FourierPage() {
     const [page, setPage] = useState("CTFS");
@@ -88,12 +88,12 @@ export default function FourierPage() {
                         </Button>
                     </ButtonGroup>
                 </Box>
-                <Box style={{ marginTop: "1.5rem" }}>
-                    {page === "CTFS" && <Box>CTFS</Box>}
-                    {page === "CTFT" && <Box>CTFT</Box>}
-                    {page === "DTFS" && <Box>DTFS</Box>}
-                    {page === "DTFT" && <Box>DTFT</Box>}
-                </Box>
+            </Box>
+            <Box display="flex" justifyContent="center" alignItems="center" width="100%" marginBottom={2}>
+                {page === "CTFS" && <h3>CTFS</h3>}
+                {page === "CTFT" && <h3>CTFT</h3>}
+                {page === "DTFS" && <h3>DTFS</h3>}
+                {page === "DTFT" && <h3>DTFT</h3>}
             </Box>
             <Box style={{display: "flex"}}>
                 <Box style={{ width: "60%", marginLeft: "5%", borderWidth: "1rem", border: "2px solid lightgrey", borderRadius: "1%" }}>
@@ -107,59 +107,29 @@ export default function FourierPage() {
                         chartRef={chartRef}
                     ></ChartPlotter>
                 )}
-                {/* {chartData && (
-                    <Line
-                    ref={chartRef}
-                    data={chartData}
-                    options={{
-                        responsive: true,
-                        scales: {
-                        x: {
-                            title: { display: true, text: 't' },
-                            ticks: {
-                                callback: function(value, index) {
-                                    return (this.getLabelForValue(value)).toFixed(2);
-                                }
-                            }
-                        },
-                        y: { title: { display: true, text: "Amplitude" } },
-                        },
-                        plugins: {
-                        zoom: {
-                            pan: { enabled: true, mode: "xy" },
-                            zoom: {
-                            wheel: { enabled: true },
-                            pinch: { enabled: true },
-                            mode: "xy",
-                            },
-                        },
-                        },
-                    }}
-                    />
-                )} */}
                 </Box>
-            </Box>
         
-            <Box style={{marginLeft: "4%"}}>
-                <Box style={{ marginTop: "1.5rem" }}>
-                    <Box>
-                        <TextField size="small" id="ftInput" label="f(t)" variant="standard" value={fInput} onChange={(e) => setFInput(e.target.value)}/>
-                        <FormControl size="small">
-                            <Select
-                                labelId="select-ft-label"
-                                id="select-ft"
-                                value={fInput}
-                                // label="f(t)"
-                                onChange={(e) => setFInput(e.target.value)}
-                                style={{marginLeft: "1rem"}}
-                            >
-                                {functionChoices.map((fn) => (
-                                    <MenuItem sx={{size: 'small'}} key={fn} value={fn}>
-                                    {fn}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
+                <Box style={{marginLeft: "4%"}}>
+                    <Box style={{ marginTop: "1.5rem" }}>
+                        <Box>
+                            <TextField size="small" id="ftInput" label="f(t)" variant="standard" value={fInput} onChange={(e) => setFInput(e.target.value)}/>
+                            <FormControl size="small">
+                                <Select
+                                    labelId="select-ft-label"
+                                    id="select-ft"
+                                    value={fInput}
+                                    // label="f(t)"
+                                    onChange={(e) => setFInput(e.target.value)}
+                                    style={{marginLeft: "1rem"}}
+                                >
+                                    {functionChoices.map((fn) => (
+                                        <MenuItem sx={{size: 'small'}} key={fn} value={fn}>
+                                        {fn}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        </Box>
                     </Box>
                 </Box>
             </Box>

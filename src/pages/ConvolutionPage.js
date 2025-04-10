@@ -1,5 +1,5 @@
-import { ConvolutionChart } from './ConvolutionChart'
-import DiscreteConvolutionPage from './DiscreteConvolution'
+import { ConvolutionChart } from '../components/ConvolutionChart'
+import DiscreteConvolutionPage from '../components/DiscreteConvolution'
 
 import { Button, ButtonGroup, Box } from '@mui/material';
 

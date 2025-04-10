@@ -1,6 +1,6 @@
 import { Box, TextField, Button } from "@mui/material";
 import { DiscreteConvolver } from "../calculations/convolution";
-import DisplayMatrix from "./DisplayMatrix";
+import DisplayMatrix from "../components/DisplayMatrix";
 import { useState } from "react";
 
 export default function DiscreteConvolutionPage() {

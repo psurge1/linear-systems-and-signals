@@ -2,7 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import { useState } from 'react';
 
-import COLORS from './pages/colorPalette'
+import COLORS from './components/colorPalette'
 import LandingPage from './pages/LandingPage'
 import ConvolutionPage from './pages/ConvolutionPage'
 import LaplacePage from './pages/LaplacePage'
