@@ -69,7 +69,7 @@ export function ConvolutionChart() {
 		}, 10000);
 	};
 
-	function resetGrid() {
+	function resetGridZoom() {
 		if (chartRef && chartRef.current) {
 			chartRef.current.resetZoom();
 		}
@@ -138,8 +138,8 @@ export function ConvolutionChart() {
 					</Button>
 					{loading && <LinearProgress/>}
 					
-					<Button variant="outlined" onClick={resetGrid} style={{ marginTop: "1rem", width: "100%" }}>
-						Reset Grid
+					<Button variant="outlined" onClick={resetGridZoom} style={{ marginTop: "1rem", width: "100%" }}>
+						Reset Zoom
 					</Button>
 				</Box>
 			</Box>

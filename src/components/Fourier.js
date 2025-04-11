@@ -85,7 +85,7 @@ export function CTFS() {
     };
 
     // for chart
-    function resetGrid() {
+    function resetGridZoom() {
         if (chartRef && chartRef.current) {
         chartRef.current.resetZoom();
         }
@@ -166,8 +166,8 @@ export function CTFS() {
                         {loading ? "Computing..." : "Compute CTFS"}
                     </Button>
                     {loading && <LinearProgress sx={{ width: "100%" }} />}
-                    <Button variant="outlined" onClick={resetGrid} sx={{ width: "100%" }}>
-                        Reset Grid
+                    <Button variant="outlined" onClick={resetGridZoom} sx={{ width: "100%" }}>
+                        Reset Zoom
                     </Button>
                 </Box>
             </Box>
