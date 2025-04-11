@@ -5,17 +5,18 @@ import { evaluate } from 'mathjs'
 
 export class ContinuousTimeFourierSeries {
     // inputs: period, x(t)
-    constructor(T, x) {
+    constructor(x, T, Tstart) {
         this.x = x;
         this.T0 = T;
         this.w0 = 2 * Math.PI / T;
         this.aValues = new Map();
         this.bValues = new Map();
+        this.Tstart = Tstart;
     }
     
     getA(n) {
-        let lowerBound = -this.T0/2;
-        let upperBound = this.T0/2;
+        let lowerBound = this.Tstart;
+        let upperBound = this.Tstart + this.T0;
         if (this.aValues.has(n)) {
             return this.aValues.get(n);
         }
@@ -26,7 +27,8 @@ export class ContinuousTimeFourierSeries {
             }
             else {
                 const integrand = (t) => this.x(t)*Math.cos(n*this.w0*t);
-                result = 2/this.T0 * ComputationalIntegration.midpoint(integrand, lowerBound, upperBound, 1000)
+                const val = ComputationalIntegration.midpoint(integrand, lowerBound, upperBound, 1000);
+                result = 2/this.T0 * val;
             }
             this.aValues.set(n, result);
             return result;
@@ -34,8 +36,8 @@ export class ContinuousTimeFourierSeries {
     }
     
     getB(n) {
-        let lowerBound = -this.T0/2;
-        let upperBound = this.T0/2;
+        let lowerBound = this.Tstart;
+        let upperBound = this.Tstart + this.T0;
         if (this.bValues.has(n)) {
             return this.bValues.get(n);
         }
@@ -57,15 +59,20 @@ export class ContinuousTimeFourierSeries {
         let as = [];
         let bs = [];
         for (let i = 0; i < n; ++i) {
-            as.push(this.getA(i));
-            bs.push(this.getB(i));
+            const a = this.getA(i);
+            const b = this.getB(i);
+            if (isNaN(a) || isNaN(b)) {
+                throw new Error("Error: a or b is NaN.");
+            }
+            as.push(a);
+            bs.push(b);
         }
         return {as, bs};
     }
 
     computeCTFS(numTerms) {
         let {as, bs} = this.computeCoefficients(numTerms + 1);
-        const approximation = (t) => {
+        this.approximation = (t) => {
             let result = this.getA(0);
             for (let i = 1; i <= numTerms; ++i) {
                 result += this.getA(i)*Math.cos(i*this.w0*t) + this.getB(i)*Math.sin(i*this.w0*t);
@@ -78,7 +85,7 @@ export class ContinuousTimeFourierSeries {
         //     console.log("i, a(i), b(i): " + i + ", " + this.getA(i) + ", " + this.getB(i));
         // }
 
-        return {approximation, as, bs};
+        return {approximation: this.approximation, as, bs};
     }
 }
 
@@ -89,29 +96,30 @@ const consolePrint = (arr) => {
 }
 
 
-const x = (t) => CSF.sawtooth(t);
-const Tx = 2;
-let cx = new ContinuousTimeFourierSeries(Tx, x);
-const {approximation, as, bs} = cx.computeCTFS(500);
-let tVals = []
-let xVals = []
-let yVals = []
-for (let t = -2; t <= 2; t += 0.01) {
-    tVals.push(t);
-    xVals.push(x(t));
-    yVals.push(approximation(t));
-}
+// const x = (t) => CSF.sawtooth(t);
+// const Tx = 2;
+// const Tstart = 0;
+// let cx = new ContinuousTimeFourierSeries(x, Tx, Tstart);
+// const {approximation, as, bs} = cx.computeCTFS(5);
+// let tVals = []
+// let xVals = []
+// let yVals = []
+// for (let t = -2; t <= 2; t += 0.01) {
+//     tVals.push(t);
+//     xVals.push(x(t));
+//     yVals.push(approximation(t));
+// }
 
-console.log(Tx);
-consolePrint(as);
-console.log("----")
-consolePrint(bs);
-console.log("----")
-consolePrint(tVals);
-console.log("----");
-consolePrint(xVals);
-console.log("----");
-consolePrint(yVals);
+// console.log(Tx);
+// consolePrint(as);
+// console.log("----")
+// consolePrint(bs);
+// console.log("----")
+// consolePrint(tVals);
+// console.log("----");
+// consolePrint(xVals);
+// console.log("----");
+// consolePrint(yVals);
 
 // console.log("DONE");
 

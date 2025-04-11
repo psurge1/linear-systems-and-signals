@@ -15,6 +15,7 @@ export class ContinuousConvolver {
     constructor(f, h) {
         this.f = f;
         this.h = h;
+        console.log("cONVFUNC: " + this.f);
     }
 
     continuousConvolution({integrationLowerBound = Defaults.LOWER_T, integrationUpperBound = Defaults.UPPER_T, increment = Defaults.INCREMENT, lowert = Defaults.LOWER_t, uppert = Defaults.UPPER_t, accuracy = Defaults.ACCURACY}) {
@@ -25,8 +26,8 @@ export class ContinuousConvolver {
         // console.log("" + lowerT + " " + upperT);
         let midpoint = (integrationUpperBound + integrationLowerBound) / 2;
         let scale = (integrationUpperBound - integrationLowerBound);
-        let boundedF = (t) => this.f(t) * CSF.rect((t - midpoint) / scale);
-        let boundedH = (t) => this.h(t) * CSF.rect((t - midpoint) / scale);
+        let boundedF = (t) => this.f(t) * CSF.rect((t - midpoint) / scale); // constrain limits (for infinite functions)
+        let boundedH = (t) => this.h(t) * CSF.rect((t - midpoint) / scale); // constrain limits (for infinite functions)
     
         for (let t = lowert; t <= uppert; t += increment) {
             let integrand = (T) => boundedF(T) * boundedH(t - T);

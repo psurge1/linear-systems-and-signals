@@ -43,11 +43,11 @@ except:
 # print("Lens: ", len(ts), len(xs), len(ys))
 # print(ts)
 
-for i in range(1, len(a_vals)):
-    subarr = []
-    for t in ts:
-        subarr.append(a_vals[i]*math.cos(i*2*math.pi/period*t) + b_vals[i]*math.sin(i*2*math.pi/period*t))
-    plt.plot(ts, subarr, linestyle=":")
+# for i in range(1, len(a_vals)):
+#     subarr = []
+#     for t in ts:
+#         subarr.append(a_vals[i]*math.cos(i*2*math.pi/period*t) + b_vals[i]*math.sin(i*2*math.pi/period*t))
+#     plt.plot(ts, subarr, linestyle=":")
 
 plt.plot(ts, ys)
 plt.plot(ts, xs, linestyle='--')

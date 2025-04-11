@@ -93,6 +93,8 @@ export function ConvolutionChart() {
 			<Box style={{marginLeft: "4%"}}>
 				<Box style={{ marginTop: "1.5rem" }}>
 					<Box>
+						<h3>Input two functions</h3>
+						<h3>Example function: 2*rect(-(t+2)/2) + tri(t-0.5)*us(t)</h3>
 						<TextField size="small" id="ftInput" label="f(t)" variant="standard" value={fInput} onChange={(e) => setFInput(e.target.value)}/>
 						<FormControl size="small">
 							<Select

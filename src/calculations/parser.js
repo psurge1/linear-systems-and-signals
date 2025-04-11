@@ -15,6 +15,12 @@ export const functionChoices = [
   "saw(t)",
 ];
 
+export const periodicFunctionChoices = [
+  "rect(t)",
+  "tri(t)",
+  "saw(t)",
+];
+
 export const evalExpression = (exp) => {
     const functionMapping = {
       sin: Math.sin,

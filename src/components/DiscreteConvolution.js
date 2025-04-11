@@ -36,7 +36,6 @@ export default function DiscreteConvolutionPage() {
 
     return (
         <Box>
-            <h3>Input sequences of integers with spaces in between (no commas or any other characters, just numbers and spaces)</h3>
             <Box
                 sx={{
                     display: "flex",
@@ -46,6 +45,7 @@ export default function DiscreteConvolutionPage() {
                     gap: 2,
                 }}
             >
+                <h3>Input sequences of integers with spaces in between (no commas or any other characters, just numbers and spaces)</h3>
                 <Box>
                     <TextField
                         label="x[n] sequence"
