@@ -88,8 +88,18 @@ export default function DiscreteConvolutionPage() {
 
 
 function processInputSequence(input) {
-    if (/^[0-9 ]+$/.test(input.trim())) {
-        return input.trim().split(/\s+/).map(Number);
+    if (/^[0-9 -]+$/.test(input.trim())) {
+        const output = input.trim().split(/\s+/).map(Number);
+        try {
+            for (let i = 0; i < output.length; ++i) {
+                if (isNaN(output[i]))
+                    return null;
+            }
+            return output;
+        }
+        catch {
+            return null;
+        }
     }
     return null;
 }

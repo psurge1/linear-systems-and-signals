@@ -5,13 +5,14 @@ import { evaluate } from 'mathjs'
 
 export class ContinuousTimeFourierSeries {
     // inputs: period, x(t)
-    constructor(x, T, Tstart) {
+    constructor(x, T, Tstart, termlimit = 1000) {
         this.x = x;
         this.T0 = T;
         this.w0 = 2 * Math.PI / T;
         this.aValues = new Map();
         this.bValues = new Map();
         this.Tstart = Tstart;
+        this.termlimit = 10000;
     }
     
     getA(n) {
@@ -23,11 +24,11 @@ export class ContinuousTimeFourierSeries {
         else {
             let result = 0;
             if (n === 0) {
-                result = 1/this.T0 * ComputationalIntegration.midpoint(this.x, lowerBound, upperBound, 1000);
+                result = 1/this.T0 * ComputationalIntegration.trapezoid(this.x, lowerBound, upperBound, this.termlimit);
             }
             else {
                 const integrand = (t) => this.x(t)*Math.cos(n*this.w0*t);
-                const val = ComputationalIntegration.midpoint(integrand, lowerBound, upperBound, 1000);
+                const val = ComputationalIntegration.trapezoid(integrand, lowerBound, upperBound, this.termlimit);
                 result = 2/this.T0 * val;
             }
             this.aValues.set(n, result);
@@ -48,7 +49,7 @@ export class ContinuousTimeFourierSeries {
             }
             else {
                 const integrand = (t) => this.x(t)*Math.sin(n*this.w0*t);
-                result = 2/this.T0 * ComputationalIntegration.midpoint(integrand, lowerBound, upperBound, 1000)
+                result = 2/this.T0 * ComputationalIntegration.trapezoid(integrand, lowerBound, upperBound, this.termlimit)
             }
             this.bValues.set(n, result);
             return result;
