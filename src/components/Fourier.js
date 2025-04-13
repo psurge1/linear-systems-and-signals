@@ -204,7 +204,7 @@ export function CTFS() {
                 </Box>
             </Box>
 
-            <Box style={{ width: "60%", marginLeft: "5%", borderWidth: "1rem", border: "2px solid lightgrey", borderRadius: "1%" }}>
+            <Box style={{ width: "60rem" }}>
                 {(chartData && chartData.labels && chartData.datasets) && (
                     <ChartPlotter
                         xValues={chartData.labels || []}

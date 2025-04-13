@@ -28,6 +28,9 @@ export function ConvolutionChart() {
 	const [chartData, setChartData] = useState(null);
 	const chartRef = useRef(null);
 
+	const [timeStart, setTimeStart] = useState(-10);
+	const [timeEnd, setTimeEnd] = useState(10);
+
 	function updateChart() {
 		setLoading(true);
 		setTimeout(() => {
@@ -76,9 +79,10 @@ export function ConvolutionChart() {
 	}
 
 	return (
-		<Box style={{display: "flex"}}>
-			<Box style={{ width: "60%", marginLeft: "5%", borderWidth: "1rem", border: "2px solid lightgrey", borderRadius: "1%" }}>
-				{(chartData && chartData.labels && chartData.datasets) && (
+		<Box sx={{display: "flex", gap: "2rem", justifyContent: "center"}}>
+			<Box sx={{ width: "60rem" }}>
+				{/* marginLeft: "5%", borderWidth: "1rem", border: "2px solid lightgrey", borderRadius: "1%" */}
+				{(chartData && chartData.labels && chartData.datasets) ? (
 					<ChartPlotter
 						xValues={chartData.labels || []}
 						datasets={chartData.datasets || []}
@@ -87,14 +91,24 @@ export function ConvolutionChart() {
 						yLabel="Amplitude"
 						chartRef={chartRef}
 					></ChartPlotter>
+				) : (
+					<Box
+						sx={{
+							backgroundColor:"lightgrey",
+							borderRadius: "1rem",
+							width:"100%",
+							height:"100%"
+						}}
+					>
+					</Box>
 				)}
 			</Box>
 			
-			<Box style={{marginLeft: "4%"}}>
-				<Box style={{ marginTop: "1.5rem" }}>
+			<Box>
+				<Box sx={{}}>
+					<h3>Input two functions</h3>
+					<h3>Example function: 2*rect(-(t+2)/2) + tri(t-0.5)*us(t)</h3>
 					<Box>
-						<h3>Input two functions</h3>
-						<h3>Example function: 2*rect(-(t+2)/2) + tri(t-0.5)*us(t)</h3>
 						<TextField size="small" id="ftInput" label="f(t)" variant="standard" value={fInput} onChange={(e) => setFInput(e.target.value)}/>
 						<FormControl size="small">
 							<Select
@@ -114,7 +128,7 @@ export function ConvolutionChart() {
 						</FormControl>
 					</Box>
 
-					<Box style={{ marginTop: "1.5rem" }}>
+					<Box sx={{marginTop: "1rem"}}>
 						<TextField size="small" id="htInput" label="h(t)" variant="standard" value={hInput} onChange={(e) => setHInput(e.target.value)}/>
 						<FormControl size="small">
 							<Select
@@ -132,6 +146,26 @@ export function ConvolutionChart() {
 								))}
 							</Select>
 						</FormControl>
+					</Box>
+					<Box sx={{marginTop: "1rem"}}>
+						<TextField
+							variant="outlined"
+							type="number"
+							size="small"
+							label="Time Start"
+							value={timeStart}
+							onChange={(e) => setTimeStart(e.target.value)}
+							sx={{ width: "48%", flex: 1 }}
+						/>
+						<TextField
+							variant="outlined"
+							type="number"
+							size="small"
+							label="Time End"
+							value={timeEnd}
+							onChange={(e) => setTimeEnd(e.target.value)}
+							sx={{ width: "48%", marginLeft: "4%", flex: 1 }}
+						/>
 					</Box>
 					<Button variant="outlined" onClick={updateChart} style={{ marginTop: "1rem", width: "100%" }}>
 						{loading ? "Computing..." : "Compute Convolution"}

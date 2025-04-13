@@ -15,7 +15,6 @@ export class ContinuousConvolver {
     constructor(f, h) {
         this.f = f;
         this.h = h;
-        console.log("cONVFUNC: " + this.f);
     }
 
     continuousConvolution({integrationLowerBound = Defaults.LOWER_T, integrationUpperBound = Defaults.UPPER_T, increment = Defaults.INCREMENT, lowert = Defaults.LOWER_t, uppert = Defaults.UPPER_t, accuracy = Defaults.ACCURACY}) {
