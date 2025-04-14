@@ -35,14 +35,14 @@ const functionMapping = {
   tri: CSF.triangle,
   saw: CSF.sawtooth,
 
-  'import':     function () { return null; },
-  'createUnit': function () { return null; },
-  'reviver':    function () { return null; },
-  'evaluate':   function () { return null; },
-  'parse':      function () { return null; },
-  'simplify':   function () { return null; },
-  'derivative': function () { return null; },
-  'resolve':    function () { return null; }
+  // 'import':     function () { return null; },
+  // 'createUnit': function () { return null; },
+  // 'reviver':    function () { return null; },
+  // 'evaluate':   function () { return null; },
+  // 'parse':      function () { return null; },
+  // 'simplify':   function () { return null; },
+  // 'derivative': function () { return null; },
+  // 'resolve':    function () { return null; }
 };
 
 
