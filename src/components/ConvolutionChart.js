@@ -36,38 +36,55 @@ export function ConvolutionChart() {
 		setTimeout(() => {
 			let f = evalExpression(fInput);
 			let h = evalExpression(hInput);
-			let convolveCalc = new ContinuousConvolver(f, h);
-			const { xValues, yValues, fValues, hValues } = convolveCalc.continuousConvolution({ increment: 0.01 });
-
-			setChartData({
-				labels: xValues,
-				datasets: [
-					{
-						label: "y(t)",
-						data: yValues,
-						borderColor: "black",
-						borderWidth: 2,
-						fill: false,
-						pointRadius: 0,
-					},
-					{
-						label: "f(t)",
-						data: fValues,
-						borderColor: "blue",
-						borderWidth: 2,
-						fill: false,
-						pointRadius: 0,
-					},
-					{
-						label: "h(t)",
-						data: hValues,
-						borderColor: "red",
-						borderWidth: 2,
-						fill: false,
-						pointRadius: 0,
-					},
-				],
-			});
+			if (Number(timeEnd) <= Number(timeStart)) {
+				alert("Time Start must be before Time End!");
+			}
+			else if (f == null) {
+				alert("f(t) is an invalid expression!")
+			}
+			else if (h == null) {
+				alert("h(t) is an invalid expression!")
+			}
+			else {
+				let convolveCalc = new ContinuousConvolver(f, h);
+				const { xValues, yValues, fValues, hValues } = convolveCalc.continuousConvolution({ increment: 0.01 });
+				for (let i = 0; i < xValues.length; ++i) {
+					if (isNaN(fValues[i]) || isNaN(hValues[i]) || isNaN(yValues[i])) {
+						alert("Divide by zero!");
+						setLoading(false);
+						return;
+					}
+				}
+				setChartData({
+					labels: xValues,
+					datasets: [
+						{
+							label: "y(t)",
+							data: yValues,
+							borderColor: "black",
+							borderWidth: 2,
+							fill: false,
+							pointRadius: 0,
+						},
+						{
+							label: "f(t)",
+							data: fValues,
+							borderColor: "blue",
+							borderWidth: 2,
+							fill: false,
+							pointRadius: 0,
+						},
+						{
+							label: "h(t)",
+							data: hValues,
+							borderColor: "red",
+							borderWidth: 2,
+							fill: false,
+							pointRadius: 0,
+						},
+					],
+				});
+			}
 			setLoading(false);
 		}, 10000);
 	};

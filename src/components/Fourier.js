@@ -36,6 +36,10 @@ export function CTFS() {
             setLoading(true);
             setTimeout(() => {
                 let f = evalExpression(fInput);
+                if (f == null) {
+                    alert("f(t) is an invalid expression!");
+                    return;
+                }
                 let CTFSCalc = new ContinuousTimeFourierSeries(f, Number(period), Number(periodStart), 10000);
                 const {approximation, as, bs} = CTFSCalc.computeCTFS(Number(numTerms));
                 let tVals = []
