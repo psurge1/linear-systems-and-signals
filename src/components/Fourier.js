@@ -38,63 +38,64 @@ export function CTFS() {
                 let f = evalExpression(fInput);
                 if (f == null) {
                     alert("f(t) is an invalid expression!");
-                    return;
                 }
-                let CTFSCalc = new ContinuousTimeFourierSeries(f, Number(period), Number(periodStart), 10000);
-                const {approximation, as, bs} = CTFSCalc.computeCTFS(Number(numTerms));
-                let tVals = []
-                let fVals = []
-                let approxVals = []
-                for (let t = Number(timeStart); t <= Number(timeEnd); t += Number(increment)) {
-                    tVals.push(t);
-                    fVals.push(f(t));
-                    approxVals.push(approximation(t));
+                else {
+                    let CTFSCalc = new ContinuousTimeFourierSeries(f, Number(period), Number(periodStart), 10000);
+                    const {approximation, as, bs} = CTFSCalc.computeCTFS(Number(numTerms));
+                    let tVals = []
+                    let fVals = []
+                    let approxVals = []
+                    for (let t = Number(timeStart); t <= Number(timeEnd); t += Number(increment)) {
+                        tVals.push(t);
+                        fVals.push(f(t));
+                        approxVals.push(approximation(t));
+                    }
+
+                    const numDecimalPlaces = 3;
+                    let fseries = `${as[0].toFixed(numDecimalPlaces)}`;
+                    for (let i = 1; i < as.length; ++i) {
+                        if (Math.abs(as[i]) > 0.001)
+                            fseries += ` + ${as[i].toFixed(numDecimalPlaces)}cos(${(2*i/period).toFixed(numDecimalPlaces)}πt)`;
+                        if (Math.abs(bs[i]) > 0.001)
+                            fseries += ` + ${bs[i].toFixed(numDecimalPlaces)}sin(${(2*i/period).toFixed(numDecimalPlaces)}πt)`;
+                    }
+                    setSeries(fseries);
+
+                    let fcosseries = `${as[0].toFixed(numDecimalPlaces)}`;
+                    for (let i = 1; i < as.length; ++i) {
+                        const magnitude = Math.sqrt(Math.pow(as[i], 2) + Math.pow(bs[i], 2));
+                        if (Math.abs(magnitude) > 0.001)
+                            fcosseries += ` + ${magnitude.toFixed(numDecimalPlaces)}cos(${(2*i/period).toFixed(numDecimalPlaces)}πt - ${Math.atan2(bs[i], as[i]).toFixed(numDecimalPlaces)})`;
+                    }
+                    setCosSeries(fcosseries);
+
+                    // console.log(approximation);
+                    // console.log("F: " + fVals);
+                    // console.log("APPROX: " + approxVals);
+                    // console.log("TEST: " + approximation(-5));;
+
+                    setChartData({
+                        labels: tVals,
+                        datasets: [
+                        {
+                            label: "f(t)",
+                            data: fVals,
+                            borderColor: "black",
+                            borderWidth: 2,
+                            fill: false,
+                            pointRadius: 0,
+                        },
+                        {
+                            label: "approximate(t)",
+                            data: approxVals,
+                            borderColor: "orange",
+                            borderWidth: 2,
+                            fill: false,
+                            pointRadius: 0,
+                        },
+                        ],
+                    });
                 }
-
-                const numDecimalPlaces = 3;
-                let fseries = `${as[0].toFixed(numDecimalPlaces)}`;
-                for (let i = 1; i < as.length; ++i) {
-                    if (Math.abs(as[i]) > 0.001)
-                        fseries += ` + ${as[i].toFixed(numDecimalPlaces)}cos(${(2*i/period).toFixed(numDecimalPlaces)}πt)`;
-                    if (Math.abs(bs[i]) > 0.001)
-                        fseries += ` + ${bs[i].toFixed(numDecimalPlaces)}sin(${(2*i/period).toFixed(numDecimalPlaces)}πt)`;
-                }
-                setSeries(fseries);
-
-                let fcosseries = `${as[0].toFixed(numDecimalPlaces)}`;
-                for (let i = 1; i < as.length; ++i) {
-                    const magnitude = Math.sqrt(Math.pow(as[i], 2) + Math.pow(bs[i], 2));
-                    if (Math.abs(magnitude) > 0.001)
-                        fcosseries += ` + ${magnitude.toFixed(numDecimalPlaces)}cos(${(2*i/period).toFixed(numDecimalPlaces)}πt - ${Math.atan2(bs[i], as[i]).toFixed(numDecimalPlaces)})`;
-                }
-                setCosSeries(fcosseries);
-
-                // console.log(approximation);
-                // console.log("F: " + fVals);
-                // console.log("APPROX: " + approxVals);
-                // console.log("TEST: " + approximation(-5));;
-
-                setChartData({
-                    labels: tVals,
-                    datasets: [
-                    {
-                        label: "f(t)",
-                        data: fVals,
-                        borderColor: "black",
-                        borderWidth: 2,
-                        fill: false,
-                        pointRadius: 0,
-                    },
-                    {
-                        label: "approximate(t)",
-                        data: approxVals,
-                        borderColor: "orange",
-                        borderWidth: 2,
-                        fill: false,
-                        pointRadius: 0,
-                    },
-                    ],
-                });
                 setLoading(false);
             }, 10000);
         }
