@@ -23,7 +23,12 @@ export function CTFS() {
 
     const [timeStart, setTimeStart] = useState(-5);
     const [timeEnd, setTimeEnd] = useState(5);
+    const [numGraphPoints, setNumGraphPoints] = useState(10000);
     const [increment, setIncrement] = useState(0.001);
+
+    useEffect(() => {
+        setIncrement(10/numGraphPoints);
+    }, [numGraphPoints])
 
     function updateChart() {
         if (Number(period) <= 0)
@@ -32,7 +37,11 @@ export function CTFS() {
             alert("This calculator supports <= 9000 CTFS terms!");
         else if (Number(timeEnd) <= Number(timeStart))
             alert("Time Start must be before Time End!");
+        else if(Number(numGraphPoints) < 10)
+            alert("Must have >= 10 graph points. 10000-50000 points recommended to preserve accuracy and maintain performance!");
         else {
+            if(Number(numGraphPoints) > 50000)
+                alert("Warning: Performance may decrease!")
             setLoading(true);
             setTimeout(() => {
                 let f = evalExpression(fInput);
@@ -40,7 +49,7 @@ export function CTFS() {
                     alert("f(t) is an invalid expression!");
                 }
                 else {
-                    let CTFSCalc = new ContinuousTimeFourierSeries(f, Number(period), Number(periodStart), 10000);
+                    let CTFSCalc = new ContinuousTimeFourierSeries(f, Number(period), Number(periodStart), numGraphPoints);
                     const {approximation, as, bs} = CTFSCalc.computeCTFS(Number(numTerms));
                     let tVals = []
                     let fVals = []
@@ -82,6 +91,7 @@ export function CTFS() {
                             data: fVals,
                             borderColor: "black",
                             borderWidth: 2,
+                            borderDash: [3, 4],
                             fill: false,
                             pointRadius: 0,
                         },
@@ -164,6 +174,15 @@ export function CTFS() {
                         label="Time End"
                         value={timeEnd}
                         onChange={(e) => setTimeEnd(e.target.value)}
+                        sx={{ flex: 1 }}
+                    />
+                    <TextField
+                        variant="outlined"
+                        type="number"
+                        size="small"
+                        label="Number of Time Steps"
+                        value={numGraphPoints}
+                        onChange={(e) => setNumGraphPoints(e.target.value)}
                         sx={{ flex: 1 }}
                     />
                 </Box>

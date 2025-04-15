@@ -13,11 +13,12 @@ export default function ChartPlotter({ xValues, datasets, title = "Chart", xLabe
         ref={chartRef}
         data={{
           labels: xValues,
-          datasets: datasets.map(({ label, data, borderColor, borderWidth, fill, pointRadius }) => ({
+          datasets: datasets.map(({ label, data, borderColor, borderWidth, borderDash, fill, pointRadius }) => ({
             label,
             data,
             borderColor: borderColor || "black",
             borderWidth: borderWidth || 2,
+            borderDash: borderDash || [1, 0],
             fill: fill || false,
             pointRadius: pointRadius || 0,
           })),
