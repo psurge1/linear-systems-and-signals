@@ -33,8 +33,10 @@ export function CTFS() {
     function updateChart() {
         if (Number(period) <= 0)
             alert("Invalid Period!");
-        else if (Number(numTerms > 9000))
+        else if (Number(numTerms) > 9000)
             alert("This calculator supports <= 9000 CTFS terms!");
+        else if (Number(numTerms) <= 0)
+            alert("Invalid number of terms!");
         else if (Number(timeEnd) <= Number(timeStart))
             alert("Time Start must be before Time End!");
         else if(Number(numGraphPoints) < 10)

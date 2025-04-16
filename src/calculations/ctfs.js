@@ -1,8 +1,4 @@
 import { ComputationalIntegration } from './calculus.js'
-import { CSF } from './singularity.js';
-
-import { evaluate } from 'mathjs'
-
 export class ContinuousTimeFourierSeries {
     // inputs: period, x(t)
     constructor(x, T, Tstart, termlimit = 1000) {
